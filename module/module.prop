@@ -1,0 +1,6 @@
+id=fgomod_zygisk
+name=ModFGO 控制台
+version=0.2.0-beta.7
+versionCode=2007
+author=ModFGO compatibility contributors
+description=OPPO FGO 2.129.0 unified control panel — critical adapter, one-hit-kill, dematerializer, auto-select, FPS and more. All features configurable via WebUI. Requires matching ModFGO compatibility module. Experimental beta.
