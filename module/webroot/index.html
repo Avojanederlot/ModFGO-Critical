@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="dark light"><title>ModFGO 控制台</title><link rel="stylesheet" href="style.css"></head>
+<body><main>
+<header><span class="eyebrow">MODFGO · OPPO</span><span class="tag">BETA 01</span></header>
+
+<section class="hero">
+  <p class="kicker">UNIFIED CONTROL</p>
+  <h1>所有功能，<br><em>你来掌控。</em></h1>
+  <p class="intro">ModFGO 统一控制台 · FGO 2.129.0</p>
+</section>
+
+<div class="state">
+  <span id="dot" class="dot"></span>
+  <span id="connection">正在读取模块状态…</span>
+  <button id="refresh" class="text-button">刷新</button>
+</div>
+
+<!-- ═══ Critical Beta 暴击 ═══ -->
+<section class="panel" id="section-critical">
+  <h2 class="section-title">⚔️ 暴击适配</h2>
+  <div class="setting">
+    <div>
+      <span class="label">我方强制暴击</span>
+      <p>在伤害计算前启用我方攻击的暴击标记。<br>敌方攻击保持游戏原有逻辑。</p>
+    </div>
+    <label class="switch"><input id="critical_enabled" type="checkbox" role="switch" aria-label="我方强制暴击" disabled><span></span></label>
+  </div>
+  <div class="notice"><span>↻</span><p>保存后约 1 秒生效，无需重启游戏。<br>关闭后，后续攻击恢复原始判断。</p></div>
+</section>
+
+<!-- ═══ ModConfig 功能开关 ═══ -->
+<section class="panel" id="section-modconfig">
+  <h2 class="section-title">🎮 功能开关</h2>
+  <p class="section-desc">原始 ModFGO 配置，修改后需要重启游戏生效。</p>
+
+  <div class="setting">
+    <div><span class="label">一击必杀</span><p>使我方攻击伤害直接击败目标。</p></div>
+    <label class="switch"><input id="EnableOneHitKill" type="checkbox" role="switch" aria-label="一击必杀" disabled><span></span></label>
+  </div>
+
+  <div class="setting">
+    <div><span class="label">灵基解放</span><p>启用从者灵基解放功能。</p></div>
+    <label class="switch"><input id="EnableDematerializer" type="checkbox" role="switch" aria-label="灵基解放" disabled><span></span></label>
+  </div>
+
+  <div class="setting">
+    <div><span class="label">替换从者</span><p>启用替换从者功能，需要配合从者 ID 使用。</p></div>
+    <label class="switch"><input id="EnableReplaceSvt" type="checkbox" role="switch" aria-label="替换从者" disabled><span></span></label>
+  </div>
+
+  <div class="setting">
+    <div><span class="label">自动选卡</span><p>自动选择指令卡。</p></div>
+    <label class="switch"><input id="EnableAutoSelectCard" type="checkbox" role="switch" aria-label="自动选卡" disabled><span></span></label>
+  </div>
+
+  <div class="setting">
+    <div><span class="label">打印资源名</span><p>在日志中打印资源名称，调试用途。</p></div>
+    <label class="switch"><input id="EnablePrintAssetName" type="checkbox" role="switch" aria-label="打印资源名" disabled><span></span></label>
+  </div>
+</section>
+
+<!-- ═══ 参数设置 ═══ -->
+<section class="panel" id="section-params">
+  <h2 class="section-title">⚙️ 参数设置</h2>
+
+  <div class="param-row">
+    <div>
+      <span class="label">卡色选择</span>
+      <p>自动选卡的卡色偏好。</p>
+    </div>
+    <select id="CardColor" disabled>
+      <option value="0">Arts (蓝)</option>
+      <option value="1">Buster (红)</option>
+      <option value="2">Quick (绿)</option>
+    </select>
+  </div>
+
+  <div class="param-row">
+    <div>
+      <span class="label">帧率设置</span>
+      <p>游戏渲染帧率，范围 30–240。</p>
+    </div>
+    <input id="SetFPS" type="number" min="30" max="240" step="10" value="120" disabled>
+  </div>
+
+  <div class="param-row">
+    <div>
+      <label class="label" for="UnitySpeed">游戏倍速</label>
+      <p>范围 1–30 倍。1 倍恢复原速。</p>
+      <p>从点击「攻击」到第一张指令卡出手前，部分过渡可能仍按原速播放。</p>
+    </div>
+    <input id="UnitySpeed" type="number" min="1" max="30" step="1" value="1" disabled>
+  </div>
+
+  <div class="param-row full-width">
+    <div>
+      <span class="label">从者 ID</span>
+      <p>替换从者的 ID 列表（JSON 数组格式），例如 <code>[100100, 200200]</code>。</p>
+    </div>
+    <input id="SvtId" type="text" placeholder="[]" disabled>
+  </div>
+</section>
+
+<!-- ═══ 保存按钮 ═══ -->
+<section class="panel save-panel">
+  <button id="save" class="primary" disabled>保存所有设置</button>
+  <p id="message" role="status" aria-live="polite">正在读取配置…</p>
+  <button id="reset" class="text-button reset-btn" disabled>恢复默认设置</button>
+</section>
+
+<!-- ═══ 诊断 ═══ -->
+<section class="metrics" aria-label="当前进程诊断">
+  <div><strong id="calls">—</strong><span>伤害接口调用</span></div>
+  <div><strong id="forced">—</strong><span>我方暴击标记</span></div>
+  <div><strong id="enemy">—</strong><span>敌方保持原样</span></div>
+</section>
+
+<details class="panel details">
+  <summary>兼容信息与诊断</summary>
+  <dl>
+    <dt>支持版本</dt><dd>OPPO 渠道 · 2.129.0 (245) · arm64</dd>
+    <dt>适配方式</dt><dd>GetDamageList · 完整转发 7 个参数</dd>
+    <dt>运行进程</dt><dd id="pid">—</dd>
+    <dt>暴击判定命中</dt><dd id="checks">—</dd>
+    <dt>适配状态</dt><dd id="stage">—</dd>
+  </dl>
+  <p>计数只表示接口调用与标记写入，不等同于每一击的最终暴击结果。重开游戏会重置计数。</p>
+</details>
+
+<footer>0.2.0-beta.7 <span>统一控制台 · 所有功能均可自定义</span></footer>
+</main><script type="module" src="app.js"></script></body></html>
